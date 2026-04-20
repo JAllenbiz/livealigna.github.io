@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aligna — Aligned Performance</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F7F5F2; color: #3A2240; line-height: 1.6; }
+
+    /* NAV */
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 2.5rem; background: #F7F5F2; border-bottom: 0.5px solid #D9D2C8; position: sticky; top: 0; z-index: 100; }
+    .nav-logo { font-size: 22px; font-weight: 500; color: #6B4270; letter-spacing: -0.3px; }
+    .nav-logo em { color: #C6A96B; font-style: normal; }
+    .nav-tag { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #A8B5A2; margin-top: 2px; }
+    .nav-cta { font-size: 13px; font-weight: 500; background: #6B4270; color: #F7F5F2; border: none; border-radius: 20px; padding: 9px 22px; cursor: pointer; text-decoration: none; display: inline-block; }
+    .nav-cta:hover { background: #7d4e84; }
+
+    /* HERO */
+    .hero { background: #6B4270; padding: 5.5rem 2rem 5rem; text-align: center; }
+    .hero-eyebrow { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #C6A96B; margin-bottom: 1rem; }
+    .hero-rule { width: 32px; height: 1px; background: #C6A96B; margin: 0 auto 1.25rem; opacity: 0.6; }
+    .hero-stop { font-size: 13px; color: rgba(247,245,242,0.5); font-style: italic; margin-bottom: 1.25rem; letter-spacing: 0.02em; }
+    .hero-h1 { font-size: clamp(28px, 5vw, 46px); font-weight: 500; color: #F7F5F2; line-height: 1.2; max-width: 640px; margin: 0 auto 1.25rem; letter-spacing: -0.3px; }
+    .hero-h1 em { color: #C6A96B; font-style: normal; }
+    .hero-sub { font-size: 16px; color: #DDD4E4; line-height: 1.85; max-width: 520px; margin: 0 auto 2rem; }
+    .hero-btn { display: inline-block; font-size: 14px; font-weight: 500; background: #C6A96B; color: #F7F5F2; border: none; border-radius: 30px; padding: 14px 34px; cursor: pointer; text-decoration: none; letter-spacing: 0.02em; }
+    .hero-btn:hover { background: #b8955a; }
+    .hero-secondary { font-size: 13px; color: rgba(247,245,242,0.5); margin-top: 14px; font-style: italic; }
+
+    /* SHARED */
+    .eyebrow { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #A8B5A2; text-align: center; margin-bottom: 1rem; }
+    .section-h2 { font-size: clamp(22px, 4vw, 32px); font-weight: 500; color: #3A2240; line-height: 1.35; text-align: center; margin-bottom: 10px; }
+    .section-h2 em { color: #6B4270; font-style: normal; }
+    .section-h2-light { font-size: clamp(22px, 4vw, 32px); font-weight: 500; color: #F7F5F2; line-height: 1.35; text-align: center; margin-bottom: 10px; }
+    .section-body { font-size: 15px; color: #5C5550; line-height: 1.85; text-align: center; max-width: 520px; margin: 0 auto; }
+    .section-body-light { font-size: 15px; color: #DDD4E4; line-height: 1.85; text-align: center; max-width: 520px; margin: 0 auto; }
+    .bridge-quote { text-align: center; font-size: 16px; font-weight: 500; color: #6B4270; font-style: italic; max-width: 520px; margin: 0 auto; padding: 1rem 0; line-height: 1.7; }
+    .bridge-quote-light { text-align: center; font-size: 16px; font-weight: 500; color: #C6A96B; font-style: italic; max-width: 520px; margin: 0 auto; padding: 1rem 0; line-height: 1.7; }
+    .bridge-rule { width: 32px; height: 1px; background: #C6A96B; margin: 0.75rem auto; opacity: 0.5; }
+
+    /* ALIGNED PERFORMANCE */
+    .ap-bg { background: #3A2240; }
+    .ap-inner { max-width: 720px; margin: 0 auto; padding: 5rem 2rem; text-align: center; }
+    .ap-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #C6A96B; margin-bottom: 1rem; }
+    .ap-title { font-size: clamp(22px, 4vw, 32px); font-weight: 500; color: #F7F5F2; line-height: 1.35; margin-bottom: 1.25rem; }
+    .ap-title em { color: #C6A96B; font-style: normal; }
+    .ap-def { background: rgba(198,169,107,0.1); border: 0.5px solid rgba(198,169,107,0.3); border-radius: 16px; padding: 1.75rem 2rem; max-width: 560px; margin: 0 auto; }
+    .ap-def-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #C6A96B; margin-bottom: 10px; }
+    .ap-def-text { font-size: 15px; color: #DDD4E4; line-height: 1.85; font-style: italic; }
+
+    /* COST OF MISALIGNMENT */
+    .cost-bg { background: #EAE3D9; }
+    .cost-inner { max-width: 720px; margin: 0 auto; padding: 5rem 2rem; }
+    .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 2.5rem; }
+    .cost-card { background: #F7F5F2; border-radius: 14px; padding: 1.3rem; border: 0.5px solid #D9D2C8; }
+    .cost-num { font-size: 22px; font-weight: 500; color: #D9D2C8; margin-bottom: 8px; }
+    .cost-title { font-size: 14px; font-weight: 500; color: #3A2240; margin-bottom: 6px; }
+    .cost-body { font-size: 13px; color: #5C5550; line-height: 1.65; }
+
+    /* PROBLEM */
+    .problem-bg { background: #F7F5F2; }
+    .problem-inner { max-width: 720px; margin: 0 auto; padding: 5rem 2rem; }
+    .prob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 2.5rem; }
+    .prob-card { background: #EAE3D9; border-radius: 14px; padding: 1.3rem; border: 0.5px solid #D9D2C8; }
+    .prob-num { font-size: 22px; font-weight: 500; color: #D9D2C8; margin-bottom: 8px; }
+    .prob-title { font-size: 14px; font-weight: 500; color: #3A2240; margin-bottom: 6px; }
+    .prob-body { font-size: 13px; color: #5C5550; line-height: 1.65; }
+    .truth-card { background: #6B4270; border-radius: 16px; padding: 2rem; margin-top: 1.5rem; text-align: center; }
+    .truth-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #C6A96B; margin-bottom: 10px; }
+    .truth-text { font-size: 16px; font-weight: 500; color: #F7F5F2; line-height: 1.65; max-width: 500px; margin: 0 auto; }
+
+    /* NEW OPERATING SYSTEM */
+    .os-bg { background: #6B4270; }
+    .os-inner { max-width: 720px; margin: 0 auto; padding: 5rem 2rem; text-align: center; }
+    .os-body { font-size: 15px; color: #DDD4E4; line-height: 1.85; max-width: 500px; margin: 1rem auto 0; }
+
+    /* PHASES */
+    .phases-bg { background: #EAE3D9; }
+    .phases-inner { max-width: 720px; margin: 0 auto; padding: 5rem 2rem; }
+    .phase-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 2.5rem; }
+    .phase-card { border-radius: 14px; padding: 1.4rem; }
+    .pc-eyebrow { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; opacity: 0.75; }
+    .pc-name { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+    .pc-days { font-size: 12px; margin-bottom: 10px; opacity: 0.6; }
+    .pc-body { font-size: 13px; line-height: 1.65; opacity: 0.85; }
+    .phases-closer { text-align: center; font-size: 15px; font-weight: 500; color: #6B4270; font-style: italic; margin-top: 2rem; max-width: 480px; margin-left: auto; margin-right: auto; }
+
+    /* REAL LIFE */
+    .rl-bg { background: #3A2240; }
+    .rl-inner { max-width: 720px; margin: 0 auto; padding: 5rem 2rem; }
+    .rl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 2.5rem; }
+    .rl-card { background: rgba(247,245,242,0.06); border: 0.5px solid rgba(198,169,107,0.25); border-radius: 14px; padding: 1.3rem; }
+    .rl-card-icon { width: 28px; height: 28px; border-radius: 50%; background: rgba(198,169,107,0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+    .rl-card-icon svg { width: 13px; height: 13px; }
+    .rl-card-text { font-size: 14px; color: #F7F5F2; line-height: 1.65; }
+    .rl-card-text em { color: #C6A96B; font-style: normal; font-weight: 500; }
+
+    /* HOW IT WORKS */
+    .how-bg { background: #F7F5F2; }
+    .how-inner { max-width: 720px; margin: 0 auto; padding: 5rem 2rem; }
+    .steps { margin-top: 2.5rem; }
+    .step { display: flex; gap: 1.25rem; padding: 1.1rem 0; border-bottom: 0.5px solid #D9D2C8; }
+    .step:last-child { border-bottom: none; }
+    .step-num { width: 32px; height: 32px; border-radius: 50%; background: #6B4270; color: #F7F5F2; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .step-title { font-size: 15px; font-weight: 500; color: #3A2240; margin-bottom: 4px; }
+    .step-body { font-size: 13px; color: #5C5550; line-height: 1.65; }
+
+    /* WHO THIS IS FOR */
+    .who-bg { background: #EAE3D9; }
+    .who-inner { max-width: 720px; margin: 0 auto; padding: 5rem 2rem; }
+    .who-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 2.5rem; }
+    .who-card { background: #F7F5F2; border-radius: 14px; padding: 1.25rem; border: 0.5px solid #D9D2C8; display: flex; gap: 12px; align-items: flex-start; }
+    .who-dot { width: 8px; height: 8px; border-radius: 50%; background: #C6A96B; flex-shrink: 0; margin-top: 5px; }
+    .who-text { font-size: 14px; color: #3A2240; line-height: 1.6; }
+
+    /* QUOTES */
+    .quotes-bg { background: #F7F5F2; }
+    .quotes-inner { max-width: 720px; margin: 0 auto; padding: 5rem 2rem; }
+    .quotes-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 2.5rem; }
+    .quote-card { background: #EAE3D9; border-radius: 14px; padding: 1.25rem; }
+    .quote-mark { font-size: 30px; color: #C6A96B; line-height: 1; margin-bottom: 8px; font-family: Georgia, serif; }
+    .quote-text { font-size: 13px; color: #3A2240; line-height: 1.75; margin-bottom: 12px; font-style: italic; }
+    .quote-name { font-size: 12px; font-weight: 500; color: #6B4270; }
+    .quote-role { font-size: 11px; color: #A8B5A2; margin-top: 2px; }
+
+    /* FOUNDER */
+    .founder-bg { background: #EAE3D9; }
+    .founder-inner { max-width: 720px; margin: 0 auto; padding: 5rem 2rem; }
+    .founder-card { background: #6B4270; border-radius: 16px; padding: 2rem; }
+    .founder-top { display: flex; align-items: center; gap: 14px; margin-bottom: 1.1rem; }
+    .founder-avatar { width: 50px; height: 50px; border-radius: 50%; background: #C6A96B; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 500; color: #F7F5F2; flex-shrink: 0; }
+    .founder-label { font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; color: #C6A96B; margin-bottom: 4px; }
+    .founder-name { font-size: 17px; font-weight: 500; color: #F7F5F2; }
+    .founder-text { font-size: 14px; color: #DDD4E4; line-height: 1.85; }
+    .founder-sign { margin-top: 14px; font-size: 13px; color: #C6A96B; font-style: italic; }
+
+    /* CTA */
+    .cta-bg { background: #6B4270; }
+    .cta-inner { max-width: 540px; margin: 0 auto; padding: 5.5rem 2rem; text-align: center; }
+    .cta-rule { width: 32px; height: 1px; background: #C6A96B; margin: 0 auto 1.25rem; opacity: 0.6; }
+    .cta-pre { font-size: 14px; color: rgba(247,245,242,0.5); font-style: italic; margin-bottom: 1.25rem; }
+    .cta-eyebrow { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #C6A96B; margin-bottom: 1rem; }
+    .cta-h2 { font-size: clamp(20px, 4vw, 30px); font-weight: 500; color: #F7F5F2; line-height: 1.4; margin-bottom: 2rem; }
+    .email-row { display: flex; gap: 8px; max-width: 420px; margin: 0 auto 14px; }
+    .email-input { flex: 1; padding: 13px 18px; border-radius: 30px; border: 0.5px solid rgba(247,245,242,0.2); background: rgba(247,245,242,0.1); color: #F7F5F2; font-size: 14px; outline: none; font-family: inherit; }
+    .email-input::placeholder { color: rgba(247,245,242,0.4); }
+    .email-input:focus { border-color: #C6A96B; }
+    .email-btn { padding: 13px 24px; border-radius: 30px; border: none; background: #C6A96B; color: #F7F5F2; font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap; font-family: inherit; }
+    .email-btn:hover { background: #b8955a; }
+    .cta-fine { font-size: 13px; color: rgba(247,245,242,0.45); font-style: italic; }
+    .success-msg { display: none; background: rgba(198,169,107,0.15); border: 0.5px solid #C6A96B; border-radius: 12px; padding: 16px 22px; color: #C6A96B; font-size: 14px; line-height: 1.65; max-width: 420px; margin: 0 auto 14px; }
+
+    /* FOOTER */
+    .footer { background: #3A2240; padding: 2.5rem 2rem; text-align: center; }
+    .footer-logo { font-size: 20px; font-weight: 500; color: #F7F5F2; }
+    .footer-logo em { color: #C6A96B; font-style: normal; }
+    .footer-tag { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #A8B5A2; margin-top: 4px; }
+    .footer-fine { font-size: 11px; color: rgba(247,245,242,0.2); margin-top: 1.5rem; }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .nav { padding: 1rem 1.25rem; }
+      .cost-grid, .prob-grid, .phase-cards, .quotes-grid, .who-grid, .rl-grid { grid-template-columns: 1fr; }
+      .email-row { flex-direction: column; }
+      .email-btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div>
+    <div class="nav-logo">Align<em>a</em></div>
+    <div class="nav-tag">Aligned Performance</div>
+  </div>
+  <a class="nav-cta" href="#cta-section">Get early access</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">A new way to operate</div>
+  <div class="hero-rule"></div>
+  <p class="hero-stop">"Stop guessing when you're at your best."</p>
+  <h1 class="hero-h1">You were never meant to perform on a <em>linear schedule</em></h1>
+  <p class="hero-sub">Your energy, focus, and decision-making follow a rhythm. Aligna shows you exactly when to push, when to plan, and when to pull back — so you can perform at your best without burning out.</p>
+  <a class="hero-btn" href="#cta-section">Get early access</a>
+  <p class="hero-secondary">Join the first wave of women learning to operate in alignment</p>
+</section>
+
+<!-- ALIGNED PERFORMANCE DEFINITION -->
+<section class="ap-bg">
+  <div class="ap-inner">
+    <div class="ap-label">Introducing a new concept</div>
+    <h2 class="ap-title">Aligned <em>Performance</em></h2>
+    <div class="ap-def">
+      <div class="ap-def-label">Definition</div>
+      <p class="ap-def-text">"Aligned performance is the ability to match your energy, focus, and decisions to the phase you're in — so you stop forcing and start executing with clarity."</p>
+    </div>
+  </div>
+</section>
+
+<!-- COST OF MISALIGNMENT -->
+<section class="cost-bg">
+  <div class="cost-inner">
+    <div class="eyebrow">The cost of misalignment</div>
+    <h2 class="section-h2">Performing out of sync is costing you<br>more than you think</h2>
+    <div class="cost-grid">
+      <div class="cost-card">
+        <div class="cost-num">01</div>
+        <div class="cost-title">Missed opportunities from poor timing</div>
+        <div class="cost-body">Your peak performance window comes and goes unrecognized. The biggest moments land in the wrong weeks — by accident, not design.</div>
+      </div>
+      <div class="cost-card">
+        <div class="cost-num">02</div>
+        <div class="cost-title">Burnout from forcing high output on low-energy days</div>
+        <div class="cost-body">You push through because the calendar says so — not because your body is ready. Over time, that gap compounds into exhaustion.</div>
+      </div>
+      <div class="cost-card">
+        <div class="cost-num">03</div>
+        <div class="cost-title">Overthinking decisions that should feel clear</div>
+        <div class="cost-body">Some decisions are hard because of the phase, not the problem. Making them at the wrong time costs clarity, confidence, and time.</div>
+      </div>
+      <div class="cost-card">
+        <div class="cost-num">04</div>
+        <div class="cost-title">Inconsistent performance that doesn't reflect your true ability</div>
+        <div class="cost-body">You know you're capable of more. But when output varies week to week with no clear reason, it's easy to question yourself instead of the system.</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <div class="bridge-rule"></div>
+      <p class="bridge-quote">When you understand your cycle, you stop guessing — and start timing your life with intention.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem-bg">
+  <div class="problem-inner">
+    <div class="eyebrow">The problem</div>
+    <h2 class="section-h2">You're not broken.<br>The system is.</h2>
+    <p class="section-body">Every productivity system you've used was built around a 24-hour cycle. That works — if you have a testosterone-dominant hormonal pattern. You don't. And nobody told you.</p>
+    <div class="prob-grid">
+      <div class="prob-card">
+        <div class="prob-num">01</div>
+        <div class="prob-title">Burnout that doesn't make sense</div>
+        <div class="prob-body">You're doing everything right. But some weeks you hit a wall — and without knowing why, you blame yourself instead of the system.</div>
+      </div>
+      <div class="prob-card">
+        <div class="prob-num">02</div>
+        <div class="prob-title">Brain fog at the worst moments</div>
+        <div class="prob-body">You schedule the big meeting and show up flat. You try to make better decisions but your mind won't cooperate. The timing always feels off.</div>
+      </div>
+      <div class="prob-card">
+        <div class="prob-num">03</div>
+        <div class="prob-title">Decisions that are harder than they should be</div>
+        <div class="prob-body">One week, every decision feels enormous. The next week, the same question has an obvious answer. Your cycle is quietly running the show.</div>
+      </div>
+      <div class="prob-card">
+        <div class="prob-num">04</div>
+        <div class="prob-title">Operating out of sync with your own energy</div>
+        <div class="prob-body">Some weeks you're built to lead and execute. Others, you need to think and restore. Treating both weeks the same isn't discipline — it's misalignment.</div>
+      </div>
+    </div>
+    <div class="truth-card">
+      <div class="truth-label">The truth nobody told you</div>
+      <p class="truth-text">"You have four distinct phases each month — each with its own strengths, focus, and decision-making capacity. Operating with precision means knowing which phase you're in."</p>
+    </div>
+  </div>
+</section>
+
+<!-- NEW OPERATING SYSTEM -->
+<section class="os-bg">
+  <div class="os-inner">
+    <div class="eyebrow" style="color:#A8B5A2;">This changes how you operate</div>
+    <h2 class="section-h2-light">This isn't a tracker.<br>It's a new operating system.</h2>
+    <p class="os-body">Aligna doesn't just show you where you are in your cycle. It tells you what that means — for your work, your energy, your peace, and your decisions.</p>
+  </div>
+</section>
+
+<!-- PHASES -->
+<section class="phases-bg">
+  <div class="phases-inner">
+    <div class="eyebrow">Your four phases</div>
+    <h2 class="section-h2">Every phase is a performance advantage.<br><em>If you know how to use it.</em></h2>
+    <p class="section-body">Aligna maps your cycle in real time and tells you — in plain language — exactly what your body and mind are optimized for today.</p>
+    <div class="phase-cards">
+      <div class="phase-card" style="background:#EAE3D9;">
+        <div class="pc-eyebrow" style="color:#5C5550;">Phase 1</div>
+        <div class="pc-name" style="color:#3A2240;">Menstrual</div>
+        <div class="pc-days" style="color:#5C5550;">Days 1–5</div>
+        <div class="pc-body" style="color:#5C5550;">Your reset and reflection phase. Intuition is sharpest here. Give yourself permission to think, not push — this is where clarity comes from.</div>
+      </div>
+      <div class="phase-card" style="background:#A8B5A2;">
+        <div class="pc-eyebrow" style="color:#F7F5F2;">Phase 2</div>
+        <div class="pc-name" style="color:#F7F5F2;">Follicular</div>
+        <div class="pc-days" style="color:#F7F5F2;">Days 6–13</div>
+        <div class="pc-body" style="color:#2D3B2C;">Use follicular energy to start what actually matters. Your brain is primed for new ideas, bold plans, and creative output. This is your execution launchpad.</div>
+      </div>
+      <div class="phase-card" style="background:#C6A96B;">
+        <div class="pc-eyebrow" style="color:#F7F5F2;">Phase 3</div>
+        <div class="pc-name" style="color:#F7F5F2;">Ovulatory</div>
+        <div class="pc-days" style="color:#F7F5F2;">Days 14–17</div>
+        <div class="pc-body" style="color:#3A2240;">Your peak performance window. Schedule your biggest pitch during ovulation — and land it. Energy, confidence, and communication are all at their highest.</div>
+      </div>
+      <div class="phase-card" style="background:#6B4270;">
+        <div class="pc-eyebrow" style="color:#C6A96B;">Phase 4</div>
+        <div class="pc-name" style="color:#F7F5F2;">Luteal</div>
+        <div class="pc-days" style="color:#DDD4E4;">Days 18–28</div>
+        <div class="pc-body" style="color:#DDD4E4;">Stop forcing decisions during luteal phase — and avoid costly mistakes. Your detail orientation is high, but major decisions belong in a different window.</div>
+      </div>
+    </div>
+    <p class="phases-closer">This is how high-performing women stop working harder — and start working smarter.</p>
+    <div style="text-align:center;margin-top:1.25rem;">
+      <div class="bridge-rule"></div>
+      <p class="bridge-quote">Each phase isn't just a feeling — it's a performance advantage.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REAL LIFE EXAMPLES -->
+<section class="rl-bg">
+  <div class="rl-inner">
+    <div class="eyebrow" style="color:#A8B5A2;">What this looks like in real life</div>
+    <h2 class="section-h2-light">When you operate in alignment,<br>everything shifts.</h2>
+    <div class="rl-grid">
+      <div class="rl-card">
+        <div class="rl-card-icon">
+          <svg viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="#C6A96B" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#C6A96B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <p class="rl-card-text">You schedule your biggest pitch during <em>ovulation</em> — and land it.</p>
+      </div>
+      <div class="rl-card">
+        <div class="rl-card-icon">
+          <svg viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="#C6A96B" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#C6A96B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <p class="rl-card-text">You stop forcing decisions during <em>luteal phase</em> — and avoid costly mistakes.</p>
+      </div>
+      <div class="rl-card">
+        <div class="rl-card-icon">
+          <svg viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="#C6A96B" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#C6A96B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <p class="rl-card-text">You use <em>follicular energy</em> to start what actually matters — not just what's urgent.</p>
+      </div>
+      <div class="rl-card">
+        <div class="rl-card-icon">
+          <svg viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="#C6A96B" stroke-width="1.2"/><path d="M4 6.5l2 2 3-3" stroke="#C6A96B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <p class="rl-card-text">You give yourself permission to <em>think, not push</em>, during menstrual phase — and your clarity returns.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2rem;">
+      <div class="bridge-rule"></div>
+      <p class="bridge-quote-light">This isn't about tracking. It's about knowing exactly what your body is optimized for — every single day.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-bg">
+  <div class="how-inner">
+    <div class="eyebrow">How it works</div>
+    <h2 class="section-h2">Precise. Simple.<br><em>Built for how you actually operate.</em></h2>
+    <p class="section-body">No daily logging. No wearable. No guesswork. Just one date — and Aligna handles the rest.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">Tell Aligna when your last period started</div>
+          <div class="step-body">One date. That's your only input. Aligna calculates your phase, maps your cycle, and builds your daily performance profile from there.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">See what your body is optimized for today</div>
+          <div class="step-body">Your dashboard shows your current phase, energy profile, and a precise read on your cognitive and decision-making capacity — not just how you feel, but what you're built for right now.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Know exactly what to do — and what to protect yourself from</div>
+          <div class="step-body">Aligna gives you a daily operating guide: what to lean into, what to avoid, and what's driving your energy beneath the surface. Make better decisions by knowing when to make them.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">Operate with precision — week after week</div>
+          <div class="step-body">See what phase is ahead so you can place the right work in the right windows. Your most important moments deserve better than random scheduling. Now you can time them with intention.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO THIS IS FOR -->
+<section class="who-bg">
+  <div class="who-inner">
+    <div class="eyebrow">Who this is for</div>
+    <h2 class="section-h2">Designed for women who want<br><em>more than balance</em></h2>
+    <p class="section-body">Aligna isn't for everyone. It's for the woman who knows she's capable of more — and is ready to operate like it.</p>
+    <div class="who-grid">
+      <div class="who-card">
+        <div class="who-dot"></div>
+        <div class="who-text">You lead a business, a team, or a household — and you need your best performance to show up consistently.</div>
+      </div>
+      <div class="who-card">
+        <div class="who-dot"></div>
+        <div class="who-text">You want clarity in your decisions — not just gut feelings, but a framework for when to decide and when to wait.</div>
+      </div>
+      <div class="who-card">
+        <div class="who-dot"></div>
+        <div class="who-text">You're tired of inconsistent energy and are ready to understand the pattern behind it — instead of pushing through it.</div>
+      </div>
+      <div class="who-card">
+        <div class="who-dot"></div>
+        <div class="who-text">You know you're capable of more — and you're done leaving your performance to chance, timing, or guesswork.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="quotes-bg">
+  <div class="quotes-inner">
+    <div class="eyebrow">What women are saying</div>
+    <h2 class="section-h2">They felt it too.<br><em>Now they perform differently.</em></h2>
+    <div class="quotes-grid">
+      <div class="quote-card">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">I used to think I was inconsistent. Turns out I was just trying to make better decisions at the wrong time every month.</div>
+        <div class="quote-name">Marissa T.</div>
+        <div class="quote-role">Mom of three, former marketing director</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">I rescheduled a pitch to my ovulatory phase. I landed the client. Timing isn't luck when you operate with precision.</div>
+        <div class="quote-name">Jade W.</div>
+        <div class="quote-role">Founder & CEO</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">Nobody teaches you this. I finally understand why my performance varied so much — and now I use it as an advantage.</div>
+        <div class="quote-name">Priya K.</div>
+        <div class="quote-role">Executive coach</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="founder-bg">
+  <div class="founder-inner">
+    <div class="eyebrow">The founder</div>
+    <h2 class="section-h2">Built by a woman who saw<br><em>what misalignment really costs</em></h2>
+    <div class="founder-card" style="margin-top:1.75rem;">
+      <div class="founder-top">
+        <div class="founder-avatar">A</div>
+        <div>
+          <div class="founder-label">From the founder</div>
+          <div class="founder-name">A woman who gets it</div>
+        </div>
+      </div>
+      <div class="founder-text">"Built by a woman who saw high-performing women burning out — not from lack of discipline, but lack of alignment. Aligna exists because the tools we use to manage our lives, our work, and our decisions were never designed around how we actually operate. That changes now."</div>
+      <div class="founder-sign">— Founder, Aligna</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-bg" id="cta-section">
+  <div class="cta-inner">
+    <div class="cta-rule"></div>
+    <div class="cta-eyebrow">Join the movement</div>
+    <p class="cta-pre">"Your most important work deserves better than random timing."</p>
+    <h2 class="cta-h2">It's time to stop forcing — and start operating in alignment.</h2>
+    <div id="email-row" class="email-row">
+      <input class="email-input" type="email" id="email-field" placeholder="Your email address" />
+      <button class="email-btn" onclick="joinWaitlist()">Get early access</button>
+    </div>
+    <div class="success-msg" id="success-msg">
+      You're in. Welcome to the first wave.<br>
+      <span style="font-size:12px;opacity:0.7;">We'll be in touch before anyone else when Aligna launches.</span>
+    </div>
+    <p class="cta-fine">Be among the first women to use their cycle as an advantage — not a limitation.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo">Align<em>a</em></div>
+  <div class="footer-tag">Aligned Performance</div>
+  <div class="footer-fine">© 2025 Aligna. All rights reserved.</div>
+</footer>
+
+<script>
+  function joinWaitlist() {
+    const email = document.getElementById("email-field").value.trim();
+    if (!email || !email.includes("@")) {
+      document.getElementById("email-field").style.borderColor = "#C6A96B";
+      document.getElementById("email-field").focus();
+      return;
+    }
+    document.getElementById("email-row").style.display = "none";
+    document.getElementById("success-msg").style.display = "block";
+  }
+  document.getElementById("email-field").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") joinWaitlist();
+  });
+</script>
+
+</body>
+</html>
